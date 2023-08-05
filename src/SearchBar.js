@@ -10,7 +10,7 @@ export const SearchBar =({query,setQuery,movies})=>{
                 type="text"
                 placeholder="Search movies..."
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(event) => setQuery(event.target.value)}
                 />
 
                 <p className="num-results">

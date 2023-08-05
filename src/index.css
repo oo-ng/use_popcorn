@@ -54,7 +54,7 @@ body {
   max-width: 42rem;
   background-color: var(--color-background-500);
   border-radius: 0.9rem;
-  /* overflow: scroll; */
+  overflow: scroll;
   position: relative;
 }
 
@@ -68,7 +68,7 @@ body {
 
 .error {
   text-align: center;
-  font-size: 2rem;
+  font-size: 3rem;
   padding: 4.8rem;
 }
 
@@ -138,7 +138,7 @@ body {
 .list {
   list-style: none;
   padding: 0.8rem 0;
-  /* overflow: scroll; */
+  
 }
 
 .list-watched {
@@ -284,7 +284,7 @@ body {
   background-color: var(--color-background-100);
   border-radius: 0.9rem;
   padding: 2rem 2.4rem;
-  margin-bottom: 0.8rem;
+  margin: 0.8rem 0rem;
   font-weight: 600;
   display: flex;
   flex-direction: column;
@@ -337,6 +337,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.btn-back-comment{
+  
+  height: 3.7rem;
+  width:8.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 15%;
+  left: 0.6rem;
+  background-color: var(--color-background-100);
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /*
