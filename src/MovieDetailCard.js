@@ -7,13 +7,15 @@ const KEY="a5819d7f";
 
 
 
-export const MovieDetailCard=({selectedMovie, setSelectedMovie})=>{
+export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, watched})=>{
+    
 
     const [allDetails, setAllDetails]=useState({});
     const [leaveComment, setLeaveComment]=useState(false);
     const [loading, setLoading]=useState(true);
+    const [isButtonDisabled, setButtonDisabled] = useState(false);
     const[errorMessage, setErrorMessage]=useState("");
-    const [usePopcornRating, setUsePopcornRating]=useState();
+    const [usePopcornRating, setUsePopcornRating]=useState(0);
     const [usePopcornComment, setUsePopcornComment]=useState();
     
 
@@ -45,6 +47,41 @@ export const MovieDetailCard=({selectedMovie, setSelectedMovie})=>{
 
     },[selectedMovie])
 
+    const InWatchList=()=>{
+        let check=watched.filter((watched)=>{
+            return selectedMovie.imdbID.includes(watched.imdbID)
+        })
+
+        if(check.length===0){
+            return false;
+        }
+        return true;
+    }
+
+    const handleAddtoWatchListClick=(event)=>{
+        
+        setButtonDisabled(true);
+        setSelectedMovie("")
+        const RuntimeTime= Number(allDetails.Runtime.split(" ").at(0));
+        const newWatchedMovie={
+            imdbID: allDetails.imdbID,
+            Title: allDetails.Title,
+            Year: allDetails.Year,
+            Poster:allDetails.Poster,
+            Runtime:(isNaN(RuntimeTime) ?0:RuntimeTime),
+            imdbRating: allDetails.imdbRating,
+            userRating:usePopcornRating,
+            userComment:usePopcornComment,
+        }
+        
+        if(!InWatchList()){
+            onAddToWatch(newWatchedMovie);
+        }
+        
+        
+    }
+    
+
     return(
         <div>
             
@@ -75,8 +112,20 @@ export const MovieDetailCard=({selectedMovie, setSelectedMovie})=>{
                     </header>
 
                     <div className="rating">
-                        <StarRating size={32} onSetRatingExternal={setUsePopcornRating}/>
-                        <button className="btn-back-comment" onClick={()=>setLeaveComment((leaveComment)=>!leaveComment)}>{`${leaveComment?"Back":"Leave a comment"}`}</button>
+                        {
+                            !(InWatchList())?
+                            <StarRating size={32} onSetRatingExternal={setUsePopcornRating}/>:
+                            <p className="btn-added">✔  Already In WatchList </p>}
+                        
+
+                        {usePopcornRating>0 && <button disabled={isButtonDisabled} onClick={handleAddtoWatchListClick} className={`${isButtonDisabled===false?"btn-add":"btn-added "}`}>
+                            {`${isButtonDisabled===false?"Add to WatchList":"✔ Added to WatchList "}`}
+                        </button>}
+
+
+                        <button className="btn-back-comment" onClick={()=>setLeaveComment((leaveComment)=>!leaveComment)}>{`${leaveComment?"Back":"Leave a comment"}`}
+                        </button>
+                        
                         {leaveComment&&<RatingCommentBox/>}
                     </div>
 

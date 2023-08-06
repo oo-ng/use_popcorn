@@ -12,8 +12,11 @@ import { Container } from './Container';
 
 
 
-const average = (arr) =>
-  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+const average = (arr) => {
+  const avg = arr.reduce((acc, cur) => acc + cur / arr.length, 0);
+  return parseFloat(avg.toFixed(1));
+};
+
 
   const KEY="a5819d7f"
 
@@ -74,7 +77,7 @@ const App=()=> {
 
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
+  const avgRuntime = average(watched.map((movie) => movie.Runtime));
 
   return (
     <>
@@ -110,6 +113,7 @@ const App=()=> {
           avgUserRating={avgUserRating} 
           avgRuntime={avgRuntime}
           setIsOpen2={setIsOpen2}
+          setWatched={setWatched}
           setSelectedMovie={setSelectedMovie}
         />
 
