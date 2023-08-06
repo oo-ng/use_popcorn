@@ -9,11 +9,11 @@ export const Container =({isOpen2, setIsOpen2, setWatched, watched, avgImdbRatin
         const check=watched.filter((watched)=>{
             return movie.imdbID.includes(watched.imdbID)
         })
-        console.log("check",check);
+        
 
         
         setWatched((watched)=>[...watched,movie])
-        console.log("watched movies", watched)
+        
         
     }
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 export const MovieWatchedBox =({watched, avgImdbRating, avgUserRating, avgRuntime, setWatched})=>{
-    console.log(watched);
+    
 
       
     
@@ -52,7 +52,6 @@ const MovieCardWatched =({Watchedmovie,watched,setWatched})=>{
 
   const handleDeleteClick = (event) =>{
     let IDToDelete = Watchedmovie.imdbID;
-    console.log(IDToDelete);
     const updatedWatched = watched.filter((movie)=>
       movie.imdbID!==IDToDelete);
       setWatched(updatedWatched);

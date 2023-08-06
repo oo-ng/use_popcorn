@@ -34,10 +34,14 @@ const App=()=> {
   const[movieNotFound, setMovieNotFound]= useState(false);
   
   useEffect(()=>{
+    const controller=new AbortController();
     const MoviesToBeFetched = async ()=>{
+      
       try{
         setLoading(true);
-        const response= await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
+        const response= await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`, 
+        {signal:controller.signal}
+        ); 
         
         
 
@@ -56,7 +60,11 @@ const App=()=> {
 
       }catch(error){
         console.error(error.message);
-        setErrorMessage(error.message);
+        if(error.name!=="AbortError"){
+          setErrorMessage(error.message);
+        }
+        
+        
         setMovies([]);
       }finally{
         setLoading(false);
@@ -70,10 +78,17 @@ const App=()=> {
     }
 
     MoviesToBeFetched();
-    console.log("selected movie: ",selectedMovie);
-    console.log(watched);
+
+    const cleanUp = () =>{
+      controller.abort();
+    }
+
+    return cleanUp;
+    
     
   },[query, setSelectedMovie])
+
+  
 
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));

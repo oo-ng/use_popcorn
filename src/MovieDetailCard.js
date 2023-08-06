@@ -38,6 +38,7 @@ export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, wat
             }
 
             finally{
+                
                 setLoading(false);
             }
             
@@ -46,6 +47,39 @@ export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, wat
         getDetails();
 
     },[selectedMovie])
+
+    //adding page event listener to close detail page;
+    useEffect(()=>{
+        const handleEscKeyDown = (event)=>{
+            if(event.code==="Escape"){
+            setSelectedMovie("");
+            }
+        }
+
+        document.addEventListener("keydown", handleEscKeyDown);
+
+        const cleanUp=()=>{
+            document.removeEventListener("keydown", handleEscKeyDown);
+        }
+    
+    return cleanUp
+    }
+
+        
+    ,[selectedMovie, setSelectedMovie])
+
+    useEffect(()=>{
+            document.title=`Movie | ${selectedMovie.Title}`;
+            const  cleanUp = ()=>{
+                document.title="usePopcorn"
+            }
+
+            return cleanUp
+        
+        
+    }
+    
+    ,[selectedMovie])
 
     const InWatchList=()=>{
         let check=watched.filter((watched)=>{
@@ -77,8 +111,7 @@ export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, wat
         if(!InWatchList()){
             onAddToWatch(newWatchedMovie);
         }
-        
-        
+
     }
     
 
@@ -116,7 +149,7 @@ export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, wat
                             !(InWatchList())?
                             <StarRating size={32} onSetRatingExternal={setUsePopcornRating}/>:
                             <p className="btn-added">✔  Already In WatchList </p>}
-                        
+                            
 
                         {usePopcornRating>0 && <button disabled={isButtonDisabled} onClick={handleAddtoWatchListClick} className={`${isButtonDisabled===false?"btn-add":"btn-added "}`}>
                             {`${isButtonDisabled===false?"Add to WatchList":"✔ Added to WatchList "}`}
@@ -126,7 +159,10 @@ export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, wat
                         <button className="btn-back-comment" onClick={()=>setLeaveComment((leaveComment)=>!leaveComment)}>{`${leaveComment?"Back":"Leave a comment"}`}
                         </button>
                         
-                        {leaveComment&&<RatingCommentBox/>}
+                        {leaveComment&&
+                        <RatingCommentBox 
+                        setSubmitState={setUsePopcornComment}
+                        placeHolder={"give a review..."}/>}
                     </div>
 
                     <section>
@@ -140,6 +176,9 @@ export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, wat
                             </p>
                             <p>
                                 Directed By: {allDetails.Director}
+                            </p>
+                            <p>
+                                Comments:{usePopcornComment}
                             </p>
                         </section>
 

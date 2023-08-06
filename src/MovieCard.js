@@ -5,7 +5,6 @@ import React from "react";
 export const MovieCard =({movie, setSelectedMovie})=>{
 
     const handleClickMovie=(event)=>{
-        console.log('movie selected',movie);
         setSelectedMovie(movie);
     }
     

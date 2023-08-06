@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export const RatingCommentBox =({width="350",height="150", placeHolder, setSubmitState,colorText="#fff" ,colorOfButton="#6741d9"})=>{
     const [commentText, setCommentText] = useState("");
@@ -7,23 +7,20 @@ export const RatingCommentBox =({width="350",height="150", placeHolder, setSubmi
     
 
     const handleSubmission =(event)=>{
-        
-        console.log("commet on submission:", commentText);
-        setComment((comment)=>{
-            comment="";
-            comment=commentText;
-            return comment;
-        });
-        if (typeof onSetRatingExternal === "function") {
+        setComment(commentText);
+        setCommentText("");
+        event.preventDefault();
+    }
+    
+    useEffect(() => {
+        if (typeof setSubmitState === "function") {
             setSubmitState(comment);
         }
-        
-        setCommentText("");
-    }
+    }, [comment, setSubmitState]);
+    
 
     const handleTextChange=(event)=>{
         const text=event.target.value;
-        console.log("commet on type:",text);
         setCommentText((comment)=>{
             comment=text;
             return comment;
