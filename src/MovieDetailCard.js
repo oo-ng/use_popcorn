@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StarRating } from "./StarRating";
 import { RatingCommentBox } from "./RatingCommentBox";
 import { LoadingMessage } from "./Helper_components";
+import { useKey } from "./useKey";
 
 const KEY="a5819d7f";
 
@@ -46,27 +47,14 @@ export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, wat
 
         getDetails();
 
-    },[selectedMovie])
+    },[selectedMovie, setSelectedMovie])
 
-    //adding page event listener to close detail page;
-    useEffect(()=>{
-        const handleEscKeyDown = (event)=>{
-            if(event.code==="Escape"){
-            setSelectedMovie("");
-            }
-        }
-
-        document.addEventListener("keydown", handleEscKeyDown);
-
-        const cleanUp=()=>{
-            document.removeEventListener("keydown", handleEscKeyDown);
-        }
     
-    return cleanUp
-    }
+
+    useKey('Escape', setSelectedMovie);
 
         
-    ,[selectedMovie, setSelectedMovie])
+  
 
     useEffect(()=>{
             document.title=`Movie | ${selectedMovie.Title}`;
@@ -91,6 +79,8 @@ export const MovieDetailCard=({onAddToWatch,selectedMovie, setSelectedMovie, wat
         }
         return true;
     }
+
+ 
 
     const handleAddtoWatchListClick=(event)=>{
         
