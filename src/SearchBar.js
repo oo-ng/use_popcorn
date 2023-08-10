@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { useKey } from './useKey'
 
 export const SearchBar =({query,setQuery,movies})=>{
