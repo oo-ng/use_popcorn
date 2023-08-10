@@ -1,20 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BoxForMain } from "./BoxForMain";
 import { MovieWatchedBox } from "./MovieCardWatched";
 import { MovieDetailCard } from "./MovieDetailCard";
 
 export const Container =({isOpen2, setIsOpen2, setWatched, watched, avgImdbRating, avgUserRating, avgRuntime, selectedMovie, setSelectedMovie})=>{
 
-    const handleAddWatch=(movie)=>{
-        const check=watched.filter((watched)=>{
-            return movie.imdbID.includes(watched.imdbID)
-        })
-        
+    
 
-        
-        setWatched((watched)=>[...watched,movie])
-        
-        
+    const handleAddWatched=(movie)=>{        
+        setWatched((watched)=>{
+            watched=[...watched,movie];
+            return watched;
+        });
+
     }
 
     return(
@@ -32,7 +30,7 @@ export const Container =({isOpen2, setIsOpen2, setWatched, watched, avgImdbRatin
                         <MovieDetailCard 
                         watched={watched}
                         selectedMovie={selectedMovie} setSelectedMovie={setSelectedMovie}
-                        onAddToWatch={handleAddWatch}
+                        onAddToWatch={handleAddWatched}
                         />
                     }
                     

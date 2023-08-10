@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { tempMovieData } from "./tempMovieData";
-import { tempWatchedData } from "./tempMovieData";
+import {  useState } from "react";
 import { NavBar } from "./NavBar";
 import { Main } from "./Main";
 import { SearchBar } from "./SearchBar";
 import { Logo } from "./Logo";
 import { AllMoviesList } from './AllMoviesList';
 import { Container } from './Container';
+import { useMovies } from "./useMovies";
+import { useLocalStorage } from "./useLocalStorage";
 
 
 
@@ -18,77 +18,21 @@ const average = (arr) => {
 };
 
 
-  const KEY="a5819d7f"
+  
 
 const App=()=> {
   
-  const[selectedMovie, setSelectedMovie]=useState("");
+  const[movieNotFound]= useState(false);
+  const [selectedMovie, setSelectedMovie]=useState("");
   const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useLocalStorage([],"watched");
+
+
   const [isOpen1, setIsOpen1] = useState(true);
   const [isOpen2, setIsOpen2] = useState(true);
 
-  const[errorMessage, setErrorMessage]=useState("");
-  const[loading, setLoading] = useState(false);
-  const[movieNotFound, setMovieNotFound]= useState(false);
-  
-  useEffect(()=>{
-    const controller=new AbortController();
-    const MoviesToBeFetched = async ()=>{
-      
-      try{
-        setLoading(true);
-        const response= await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`, 
-        {signal:controller.signal}
-        ); 
-        
-        
-
-        if (!response.ok) {
-          throw new Error("⛔ERROR⛔  Something is wrong fetching the data");
-          
-        }
-        const movieData=await response.json();
-        console.log("movieData: ", movieData);
-        if(movieData.Response==="False"){
-          throw new Error ("Movie/Show not found"); 
-        }else{
-          setMovies(movieData.Search);
-          setErrorMessage("");
-        }
-
-      }catch(error){
-        console.error(error.message);
-        if(error.name!=="AbortError"){
-          setErrorMessage(error.message);
-        }
-        
-        
-        setMovies([]);
-      }finally{
-        setLoading(false);
-      }
-    }
-
-    if(query.length<3){
-      setMovies([]);
-      setErrorMessage("");
-      return;
-    }
-
-    MoviesToBeFetched();
-
-    const cleanUp = () =>{
-      controller.abort();
-    }
-
-    return cleanUp;
-    
-    
-  },[query, setSelectedMovie])
-
-  
+  const [movies, errorMessage, loading]= useMovies(query, function handleClose(){setSelectedMovie("")})
+ 
 
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
