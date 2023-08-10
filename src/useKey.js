@@ -16,7 +16,7 @@ export const useKey =(key, action)=>{
 
         const cleanUp=()=>{
             document.removeEventListener("keydown", handleEscKeyDown);
-            console.log("Hi");
+            
         }
     
     return cleanUp
