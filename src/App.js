@@ -22,14 +22,11 @@ const average = (arr) => {
 
 const App=()=> {
   
-  const[movieNotFound, setMovieNotFound]= useState(false);
+  const[movieNotFound]= useState(false);
   const [selectedMovie, setSelectedMovie]=useState("");
   const [query, setQuery] = useState("");
   const [watched, setWatched] = useLocalStorage([],"watched");
-  // const [watched, setWatched] = useState(()=>{
-  //   const storedWatchedShows = localStorage.getItem('watched');
-  //   return JSON.parse(storedWatchedShows);
-  // });
+
 
   const [isOpen1, setIsOpen1] = useState(true);
   const [isOpen2, setIsOpen2] = useState(true);

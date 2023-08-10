@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 export const useKey =(key, action)=>{
 
@@ -19,7 +19,7 @@ export const useKey =(key, action)=>{
         }
     
     return cleanUp
-    }, [ action, key])
+    }, [action, key])
 }
 
 
